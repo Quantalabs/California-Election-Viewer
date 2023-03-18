@@ -34,16 +34,16 @@ jobs:
     - name: Show problems
       continue-on-error: true
       run: |
-        flake8 app.py core/*.py
+        flake8 app.py src/*.py
       
     - name: Run QA Tests
       run: |
-        isort app.py core/*.py
-        autopep8 --in-place app.py core/*.py
-        ttws app.py core/*.py
+        isort app.py src/*.py
+        autopep8 --in-place app.py src/*.py
+        ttws app.py src/*.py
     - name: Show unresolved problems
       run: |
-        flake8 app.py core/*.py
+        flake8 app.py src/*.py
 
     - name: Commit changes
       continue-on-error: true
