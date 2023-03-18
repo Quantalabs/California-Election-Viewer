@@ -39,8 +39,8 @@ app.layout = html.Div([
 
 @app.callback(
     Output('hover-data', 'children'),
-    Input('graph', 'hoverData'))
-def display_hover_data(hoverData):
+    Input('graph', 'hoverdata'))
+def display_hover_data(hoverdata):
     data = {}
     header = [
         "County",
@@ -63,7 +63,8 @@ def display_hover_data(hoverData):
     for i in range(header.__len__()):
         if header[i] == "County":
             continue
-        data[header[i]] = jsondata[hoverData['points'][0]['location']][header[i]]
+        county = hoverdata['points'][0]['location']
+        data[header[i]] = jsondata[county][header[i]]
 
     return json.dumps(data, indent=2)
 
