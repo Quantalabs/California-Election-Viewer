@@ -28,13 +28,13 @@ app.layout = html.Div([
     ),
     dcc.Graph(id="graph"),
     html.Div([
-            dcc.Markdown("""
+        dcc.Markdown("""
                 **Hover Data**
 
                 Mouse over values in the graph.
             """),
-            html.Pre(id='hover-data', style=styles['pre'])
-        ], className='three columns'),
+        html.Pre(id='hover-data', style=styles['pre'])
+    ], className='three columns'),
 ])
 
 @app.callback(
@@ -42,7 +42,21 @@ app.layout = html.Div([
     Input('graph', 'hoverData'))
 def display_hover_data(hoverData):
     data = {}
-    header = ["County","Eligible","Total Registered","Democratic","Republican","American Independent","Green","Libertarian","Peace and Freedom","Unknown","Other","No Party Preference","FIPS","Party"]
+    header = [
+        "County",
+        "Eligible",
+        "Total Registered",
+        "Democratic",
+        "Republican",
+        "American Independent",
+        "Green",
+        "Libertarian",
+        "Peace and Freedom",
+        "Unknown",
+        "Other",
+        "No Party Preference",
+        "FIPS",
+        "Party"]
 
     jsondata = json.load(open("data/county_voter_reg_stats.json"))
 
@@ -50,7 +64,7 @@ def display_hover_data(hoverData):
         if header[i] == "County":
             continue
         data[header[i]] = jsondata[hoverData['points'][0]['location']][header[i]]
-    
+
     return json.dumps(data, indent=2)
 
 @app.callback(
