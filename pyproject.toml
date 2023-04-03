@@ -9,7 +9,7 @@ packages = [{include = 'core'}]
 [tool.poetry.dependencies]
 python = '~3.11.0'
 plotly = '~5.11.0'
-dash = '~2.6.2'
+dash = '~2.9.2'
 pandas = '~1.4.3'
 
 [tool.poetry.dev-dependencies]
