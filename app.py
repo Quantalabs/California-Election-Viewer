@@ -17,16 +17,23 @@ styles = {
     }
 }
 
+
+def display_choropleth():
+    df = pd.read_csv("./data/county_voter_reg_stats.csv",
+                     dtype={"fips": str})
+
+    counties = json.load(open("./data/counties.geojson"))
+    legdistricts = json.load(open("./data/legislativedistricts.geojson"))
+    fig = px.choropleth(df, geojson=counties, color="Party",
+                        locations="County", featureidkey="properties.name")
+    fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+
+    return fig
+
 app.layout = html.Div([
     html.H4('State of California Election Data'),
-    html.P("Color by:"),
-    dcc.RadioItems(
-        id='colorby',
-        options=["Eligible", "Total Registered", "Party"],
-        value="Eligible",
-        inline=True
-    ),
-    dcc.Graph(id="graph"),
+    dcc.Graph(id="graph", figure=display_choropleth()),
     html.Div([
         dcc.Markdown("""
                 **Hover Data**
@@ -39,8 +46,8 @@ app.layout = html.Div([
 
 @app.callback(
     Output('hover-data', 'children'),
-    Input('graph', 'hoverdata'))
-def display_hover_data(hoverdata):
+    [Input('graph', 'clickData')],)
+def display_hover_data(hoverData):
     data = {}
     header = [
         "County",
@@ -63,32 +70,10 @@ def display_hover_data(hoverdata):
     for i in range(header.__len__()):
         if header[i] == "County":
             continue
-        county = hoverdata['points'][0]['location']
+        county = hoverData['points'][0]['location']
         data[header[i]] = jsondata[county][header[i]]
 
     return json.dumps(data, indent=2)
-
-@app.callback(
-    Output("graph", "figure"),
-    Input("colorby", "value"))
-def display_choropleth(colorby):
-    df = pd.read_csv("./data/county_voter_reg_stats.csv",
-                     dtype={"fips": str})
-
-    counties = json.load(open("./data/counties.geojson"))
-
-    if colorby != "Party":
-        fig = px.choropleth(df, geojson=counties, color=colorby,
-                            locations="County", featureidkey="properties.name",
-                            color_continuous_scale="sunset")
-    else:
-        fig = px.choropleth(df, geojson=counties, color=colorby,
-                            locations="County", featureidkey="properties.name")
-
-    fig.update_geos(fitbounds="locations", visible=False)
-    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-
-    return fig
 
 
 app.run_server(debug=True)
