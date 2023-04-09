@@ -1,14 +1,15 @@
 import json
 
 import requests
-from dotenv import dotenv_values
+
+from .. import utils
 
 
 class House:
     def __init__(self):
-        self.uscongress = dotenv_values(".env")["USCONGRESS_API_KEY"]
-        self.propublica = dotenv_values(".env")["PROPUBLICA_API_KEY"]
-        self.openstates = dotenv_values(".env")["OPENSTATES_API_KEY"]
+        self.uscongress = utils.apikeys.apikeys["congress"]
+        self.propublica = utils.apikeys.apikeys["propublica"]
+        self.openstates = utils.apikeys.apikeys["openstates"]
 
     # Get all house representatives
     def representatives(self):
@@ -46,9 +47,9 @@ class House:
 
 class Senate:
     def __init__(self):
-        self.uscongress = dotenv_values(".env")["USCONGRESS_API_KEY"]
-        self.propublica = dotenv_values(".env")["PROPUBLICA_API_KEY"]
-        self.openstates = dotenv_values(".env")["OPENSTATES_API_KEY"]
+        self.uscongress = utils.apikeys.apikeys["congress"]
+        self.propublica = utils.apikeys.apikeys["propublica"]
+        self.openstates = utils.apikeys.apikeys["openstates"]
 
     def senators(self):
         url = "https://api.propublica.org/congress/v1/118/senate/members.json"
