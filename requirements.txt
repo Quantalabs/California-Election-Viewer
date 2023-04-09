@@ -1,3 +1,4 @@
 plotly~=5.9.0
 dash~=2.8.1
 pandas~=1.4.3
+requests~=2.28.2
