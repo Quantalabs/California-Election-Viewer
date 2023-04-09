@@ -67,7 +67,7 @@ app.layout = html.Div(
     Output("hover-data", "children"),
     [Input("graph", "clickData")],
 )
-def display_hover_data(hoverData):
+def display_hover_data(hoverdata):
     data = {}
     header = [
         "County",
@@ -89,11 +89,11 @@ def display_hover_data(hoverData):
     jsondata = json.load(open("data/county_voter_reg_stats.json"))
 
     for i in range(header.__len__()):
-        if hoverData is None:
+        if hoverdata is None:
             break
         if header[i] == "County":
             continue
-        county = hoverData["points"][0]["location"]
+        county = hoverdata["points"][0]["location"]
         data[header[i]] = jsondata[county][header[i]]
 
     returnvalue = (
