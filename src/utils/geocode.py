@@ -1,7 +1,14 @@
-from geopy import Nominatim
+import urllib.parse as urlparse
+
+import requests
 
 
 def get_coordinates(address):
-    geolocator = Nominatim(user_agent="my_app")
-    location = geolocator.geocode(address)
-    return location.latitude, location.longitude
+    url = f"https://geocode.maps.co/search?q={urlparse.quote(address)}"
+
+    response = requests.get(url)
+    data = response.json()
+    lat = data[0]["lat"]
+    long = data[0]["lon"]
+
+    return lat, long
