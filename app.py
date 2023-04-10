@@ -4,6 +4,8 @@ import pandas as pd
 import plotly.express as px
 from dash import Dash, Input, Output, dcc, html
 
+from src import federal, local, utils
+
 app = Dash(__name__)
 
 colors = {"background": "#111111", "text": "#7FDBFF"}
@@ -50,17 +52,57 @@ app.layout = html.Div(
             [
                 dcc.Markdown(
                     """
-                **Hover Data**
+                **Data for given county**
 
-                Mouse over values in the graph.
+                Click on a county to view more detailed stats.
             """
                 ),
                 html.Pre(id="hover-data", style=styles["pre"]),
             ],
             className="three columns",
         ),
+        dcc.Input(
+            id="address",
+            type="text",
+            placeholder="Enter your address to get your representatives",
+            style={"width": "48%", "float": "left", "margin-right": "2%"},
+        ),
+        html.Div(
+            [
+                dcc.Markdown(
+                    """
+                **Data for given address**
+
+                Enter your address to get your representatives
+                    """
+                ),
+                html.Pre(id="address-data", style=styles["pre"]),
+            ]
+        ),
     ]
 )
+
+
+@app.callback(
+    Output("address-data", "children"),
+    [Input("address", "value")],
+)
+def display_representatives(address):
+    lat, long = utils.geocode.get_coordinates(address)
+
+    localrepresentatives = local.getrepresentatives.getrepresentatives(
+        lat, long
+    )
+    senate = federal.getchamberinfo.Senate()
+    senators = senate.senators()
+
+    returnvalue = {"Local": localrepresentatives, "US Senate": senators}
+
+    return (
+        json.dumps(returnvalue)
+        if returnvalue != {}
+        else "Enter a valid address"
+    )
 
 
 @app.callback(
