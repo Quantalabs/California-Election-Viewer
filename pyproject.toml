@@ -10,7 +10,7 @@ python = '~3.11.0'
 plotly = '~5.14.1'
 dash = '~2.10.0'
 pandas = '~2.0.1'
-requests = '~2.30.0'
+requests = '~2.31.0'
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "~3.3.1"
