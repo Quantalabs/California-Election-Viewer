@@ -201,23 +201,23 @@ files = [
 
 [[package]]
 name = "dash"
-version = "2.10.0"
+version = "2.10.2"
 description = "A Python framework for building reactive web-apps. Developed by Plotly."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "dash-2.10.0-py3-none-any.whl", hash = "sha256:2a010cd593f952041ab1737ea8af574b19be54584f52665f269eb0bcfef765fa"},
-    {file = "dash-2.10.0.tar.gz", hash = "sha256:33abd550733a609247b792d29d5b8fc9663e5161409a3179ec24551f4b74f2a6"},
+    {file = "dash-2.10.2-py3-none-any.whl", hash = "sha256:f1b7132558bd2341e6cf7ca1e83e216d46bbb27a255ca962a0fa5561c6776953"},
+    {file = "dash-2.10.2.tar.gz", hash = "sha256:b99839890b44171da0e3668c2e607ef4b4f6948a6074c034693534ba52aa1d2b"},
 ]
 
 [package.dependencies]
 dash-core-components = "2.0.0"
 dash-html-components = "2.0.0"
 dash-table = "5.0.0"
-Flask = ">=1.0.4,<=2.2.3"
+Flask = ">=1.0.4,<2.3.0"
 plotly = ">=5.0.0"
-Werkzeug = "<=2.2.3"
+Werkzeug = "<2.3.0"
 
 [package.extras]
 celery = ["celery[redis] (>=5.1.2)", "importlib-metadata (<5)", "redis (>=3.5.3)"]
@@ -1014,4 +1014,4 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11.0"
-content-hash = "b31985af83f33fdadab9fa0b3a52aaa75e7caed1ccb6a98418abdec81580b6ed"
+content-hash = "01fdba0fc01d98ae8c0ccdf3a72fcb2233013e8d1d118b3e8785d6fc4adca579"
