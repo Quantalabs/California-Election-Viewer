@@ -2,7 +2,7 @@ import json
 
 import pandas as pd
 import plotly.express as px
-from dash import Dash, Input, Output, dcc, html
+from dash import Dash, Input, Output, State, dcc, html
 
 from src import federal, local, utils
 
@@ -42,41 +42,95 @@ def display_choropleth():
 app.layout = html.Div(
     [
         html.H4("State of California Election Data"),
-        dcc.Graph(
-            id="graph",
-            figure=display_choropleth(),
-            config={},
-            style={"width": "48%", "float": "left", "margin-right": "2%"},
+        html.Div(
+            [
+                dcc.Graph(
+                    id="graph",
+                    figure=display_choropleth(),
+                    config={},
+                    style={"width": "98%", "margin-right": "2%"},
+                ),
+                dcc.Input(
+                    id="address",
+                    type="text",
+                    placeholder="Enter your address to get your representatives",  # noqa: E501
+                    style={"width": "80%"},
+                ),
+                html.Button(
+                    "Submit",
+                    id="addr-submit-val",
+                    n_clicks=0,
+                    style={"margin-right": "2%"},
+                ),
+                dcc.Input(
+                    id="reprinfo",
+                    type="text",
+                    placeholder="Enter name of representative to get their sponsored bills ",  # noqa: E501
+                    style={"width": "80%"},
+                ),
+                html.Button(
+                    "Submit",
+                    id="reprinfo-submit-val",
+                    n_clicks=0,
+                    style={"margin-right": "2%"},
+                ),
+            ],
+            style={"float": "left", "width": "50%"},
         ),
         html.Div(
             [
-                dcc.Markdown(
-                    """
+                html.Div(
+                    [
+                        dcc.Markdown(
+                            """
                 **Data for given county**
 
                 Click on a county to view more detailed stats.
             """
+                        ),
+                        html.Pre(id="hover-data", style=styles["pre"]),
+                    ],
+                    className="three columns",
                 ),
-                html.Pre(id="hover-data", style=styles["pre"]),
-            ],
-            className="three columns",
-        ),
-        dcc.Input(
-            id="address",
-            type="text",
-            placeholder="Enter your address to get your representatives",
-            style={"width": "48%", "float": "left", "margin-right": "2%"},
-        ),
-        html.Div(
-            [
-                dcc.Markdown(
-                    """
+                html.Div(
+                    [
+                        dcc.Markdown(
+                            """
                 **Data for given address**
 
                 Enter your address to get your representatives
                     """
+                        ),
+                        dcc.Loading(
+                            id="address-loading",
+                            children=[
+                                html.Pre(
+                                    id="address-data", style=styles["pre"]
+                                )
+                            ],
+                            type="circle",
+                        ),
+                    ],
                 ),
-                html.Pre(id="address-data", style=styles["pre"]),
+                html.Div(
+                    [
+                        dcc.Markdown(
+                            """
+                **Data for representative**
+
+                Enter name of representative to get their sponsored bills. (This takes a bit, since some representatives might have sponsored a lot of bills.)"""  # noqa: E501
+                        ),
+                        dcc.Loading(
+                            id="reprinfo-loading",
+                            children=[
+                                html.Pre(
+                                    id="reprinfo-data", style=styles["pre"]
+                                )
+                            ],
+                            type="circle",
+                        ),
+                    ],
+                ),
             ]
         ),
     ]
@@ -84,25 +138,37 @@ app.layout = html.Div(
 
 
 @app.callback(
-    Output("address-data", "children"),
-    [Input("address", "value")],
+    Output("reprinfo-data", "children"),
+    Input("reprinfo-submit-val", "n_clicks"),
+    State("reprinfo", "value"),
 )
-def display_representatives(address):
-    lat, long = utils.geocode.get_coordinates(address)
+def display_reprinfo(n_clicks, reprinfo):
+    if reprinfo is None:
+        return "Enter name of representative to get their sponsored bills"
 
-    localrepresentatives = local.getrepresentatives.getrepresentatives(
-        lat, long
+    representativeinfo = local.getbills.byrepresentative(
+        local.getrepresentatives.byname(reprinfo)["id"]
     )
+
+    return json.dumps(representativeinfo, indent=2)
+
+
+@app.callback(
+    Output("address-data", "children"),
+    Input("addr-submit-val", "n_clicks"),
+    State("address", "value"),
+)
+def display_representatives(n_clicks, address):
+    if address is None:
+        return "Enter a valid address"
+
+    localrepresentatives = local.getrepresentatives.byaddress(address)
     senate = federal.getchamberinfo.Senate()
     senators = senate.senators()
 
     returnvalue = {"Local": localrepresentatives, "US Senate": senators}
 
-    return (
-        json.dumps(returnvalue)
-        if returnvalue != {}
-        else "Enter a valid address"
-    )
+    return json.dumps(returnvalue, indent=2)
 
 
 @app.callback(
