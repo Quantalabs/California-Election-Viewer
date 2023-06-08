@@ -1,2 +1,2 @@
 from .. import utils
-from . import getrepresentatives
+from . import getbills, getrepresentatives
