@@ -202,13 +202,13 @@ files = [
 
 [[package]]
 name = "dash"
-version = "2.14.0"
+version = "2.14.1"
 description = "A Python framework for building reactive web-apps. Developed by Plotly."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "dash-2.14.0-py3-none-any.whl", hash = "sha256:b88ffb53cb1bf54c12780ecf89943bb901c8914b3c075002e46519c9b17d7a72"},
-    {file = "dash-2.14.0.tar.gz", hash = "sha256:bd28be70be24ae1d1f764b8217a03da35e9ed895406686d24dfb6ed4e331e5a9"},
+    {file = "dash-2.14.1-py3-none-any.whl", hash = "sha256:ce440ef7416945c9daa8274948483a0aac928a4fec768c0384fd4e9a6196eaf2"},
+    {file = "dash-2.14.1.tar.gz", hash = "sha256:93dc9d665ec5d3720647d4cef4520a1c7cd1bde57e893ffeb7e6cd59781d3294"},
 ]
 
 [package.dependencies]
@@ -216,7 +216,7 @@ ansi2html = "*"
 dash-core-components = "2.0.0"
 dash-html-components = "2.0.0"
 dash-table = "5.0.0"
-Flask = ">=1.0.4,<2.3.0"
+Flask = ">=1.0.4,<3.1"
 importlib-metadata = {version = "*", markers = "python_version >= \"3.7\""}
 nest-asyncio = "*"
 plotly = ">=5.0.0"
@@ -224,7 +224,7 @@ requests = "*"
 retrying = "*"
 setuptools = "*"
 typing-extensions = ">=4.1.1"
-Werkzeug = "<2.3.0"
+Werkzeug = "<3.1"
 
 [package.extras]
 celery = ["celery[redis] (>=5.1.2)", "importlib-metadata (<5)", "redis (>=3.5.3)"]
@@ -1047,4 +1047,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11.0"
-content-hash = "97b5fe967a6ceebe8995a70f95065a1a536c6d41a98204295fb86901b3225fe6"
+content-hash = "641bbc40e27f3939fec160b7f4706800e4017901125e0c741d5f61a949760428"
