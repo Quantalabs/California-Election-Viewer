@@ -21,7 +21,7 @@ flake8-noqa = '~1.4.0'
 flake8 = '~6.0.0'
 ttws = '~0.8.5'
 autopep8 = '~2.0.4'
-black = "~24.2.0"
+black = "~24.3.0"
 
 [build-system]
 requires = ['poetry-core']
